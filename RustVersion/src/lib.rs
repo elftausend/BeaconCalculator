@@ -2,9 +2,9 @@
 
 pub mod color_distance {
 
-    extern crate lab;
     use deltae::*;
     use lab::rgbs_to_labs;
+    use std::fmt;
 
     /// Represents an RGB color with red, green, and blue components.
     #[derive(Debug, Clone, Copy)]
@@ -42,6 +42,12 @@ pub mod color_distance {
             let blue = (number & 0xFF) as u8;
 
             RGB { red, green, blue }
+        }
+    }
+
+    impl fmt::Display for RGB {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "0x{:02x}{:02x}{:02x}", self.red, self.green, self.blue)
         }
     }
 

@@ -1,6 +1,8 @@
 use beacon::color_distance::{calculate_distance, PreciseRGB, RGB};
 use crossbeam::thread;
+use indicatif::ProgressBar;
 use std::collections::HashMap;
+use std::time::Duration;
 
 struct Results<'a> {
     distance: f64,
@@ -55,6 +57,11 @@ fn main() {
 fn find_closest_panes(target_color: RGB, available_colors: HashMap<&str, RGB>) -> Results {
     let mut results = vec![];
 
+    // Create a progress bar with the total number of tasks
+    let bar = ProgressBar::new_spinner();
+    bar.enable_steady_tick(Duration::from_millis(10));
+    bar.set_message(format!("Starting processing {}", target_color));
+
     thread::scope(|s| {
         for starting_color in available_colors.keys() {
             let available_colors = available_colors.clone(); // Clone to move ownership into closure
@@ -77,6 +84,8 @@ fn find_closest_panes(target_color: RGB, available_colors: HashMap<&str, RGB>) -
         }
     })
     .unwrap();
+
+    bar.finish_with_message(format!("Finished processing {}", target_color));
 
     let mut min_tuple: (f64, Vec<&str>) = (0.0, vec![]);
     let mut min_value = f64::INFINITY;
