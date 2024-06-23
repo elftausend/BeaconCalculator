@@ -122,7 +122,7 @@ fn generate_combinations<'a>(
         return (dist, most_similar.to_vec());
     }
 
-    let mut min_distance = std::f64::INFINITY;
+    let mut min_distance = f64::INFINITY;
 
     for (key, _) in available_colors.clone().iter() {
         // Append the current possibility to the combination
