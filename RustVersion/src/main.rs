@@ -52,7 +52,7 @@ fn main() {
 
     let args: Vec<String> = env::args().collect();
 
-    let without_prefix = args[0].trim_start_matches("0x");
+    let without_prefix = args[1].trim_start_matches("0x");
     let z = u32::from_str_radix(without_prefix, 16).unwrap();
 
     let target_color = RGB::new_from_number(z);
