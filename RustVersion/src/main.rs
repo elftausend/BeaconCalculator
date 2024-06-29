@@ -2,6 +2,7 @@ use beacon::color_distance::{calculate_distance, PreciseRGB, RGB};
 use crossbeam::thread;
 use indicatif::ProgressBar;
 use std::collections::HashMap;
+use std::env;
 use std::time::Duration;
 
 struct Results<'a> {
@@ -49,7 +50,12 @@ fn main() {
     .cloned()
     .collect();
 
-    let target_color = RGB::new_from_number(0x00ffff);
+    let args: Vec<String> = env::args().collect();
+
+    let without_prefix = args[0].trim_start_matches("0x");
+    let z = u32::from_str_radix(without_prefix, 16).unwrap();
+
+    let target_color = RGB::new_from_number(z);
     let results = find_closest_panes(target_color, colors);
     Results::print(&results)
 }
